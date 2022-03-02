@@ -1,29 +1,31 @@
 {% extends 'base.html' %}
 {% load board_filter %}
 {% block content %}
-<div class="container my-3">
+<div class="text-center container my-3">
     <table class="table">
         <thead>
         <tr class="thead-dark">
             <th>번호</th>
-            <th>제목</th>
+            <th style="width:50%">제목</th>
+            <th>글쓴이</th>
             <th>작성일시</th>
         </tr>
         </thead>
         <tbody>
         {% if question_list %}
         {% for question in question_list %}
-        <tr>
+        <tr class="text-center">
             <td>
                 <!-- 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 -->
                 {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1 }}
             </td>
-            <td>
+            <td class="text-center">
                 <a href="{% url 'board:detail' question.id %}">{{ question.subject }}</a>
                 {% if question.answer_set.count > 0 %}
                 <span class="text-danger small ml-2">{{ question.answer_set.count }}</span>
                 {% endif %}
             </td>
+            <td>{{ question.author.username }}</td>  <!-- 글쓴이 추가 -->
             <td>{{ question.create_date }}</td>
         </tr>
         {% endfor %}
@@ -39,11 +41,11 @@
         <!-- 이전페이지 -->
         {% if question_list.has_previous %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ question_list.previous_page_number }}">이전</a>
+            <a class="page-link" href="?page={{ question_list.previous_page_number }}">pre</a>
         </li>
         {% else %}
         <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">pre</a>
         </li>
         {% endif %}
         <!-- 페이지리스트 -->
@@ -63,15 +65,17 @@
         <!-- 다음페이지 -->
         {% if question_list.has_next %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ question_list.next_page_number }}">다음</a>
+            <a class="page-link" href="?page={{ question_list.next_page_number }}">next</a>
         </li>
         {% else %}
         <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">next</a>
         </li>
         {% endif %}
     </ul>
     <!-- 페이징처리 끝 -->
-    <a href="{% url 'board:question_create' %}" class="btn btn-primary">질문 등록하기</a>
+    <div class="text-left">
+        <a href="{% url 'board:question_create' %}" class="btn btn-primary text-center">질문 등록하기</a>
+    </div>
 </div>
 {% endblock %}
