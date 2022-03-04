@@ -23,5 +23,6 @@ urlpatterns = [
     path('board/', include('board.urls')),
     path('main/', include('main.urls')),
     path('common/', include('common.urls')),
+    path('news/', include('news.urls')),
     path('', views.main, name='main'),
 ]

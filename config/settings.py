@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'news.apps.NewsConfig',
     'common.apps.CommonConfig',
     'main.apps.MainConfig',
     'board.apps.BoardConfig',

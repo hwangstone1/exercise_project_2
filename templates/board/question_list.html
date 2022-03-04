@@ -2,7 +2,15 @@
 {% load board_filter %}
 {% block content %}
 <div class="text-center container my-3">
-    <div class="row justify-content-end my-3">
+    <div class="row justify-content-between my-3">
+
+        <div class="col-2">
+            <select class="form-control so">
+                <option value="recent" {% if so == 'recent' %}selected{% endif %}>최신순</option>
+                <option value="recommend" {% if so == 'recommend' %}selected{% endif %}>추천순</option>
+                <option value="popular" {% if so == 'popular' %}selected{% endif %}>인기순</option>
+            </select>
+        </div>
         <div class="col-4 input-group">
             <input type="text" class="form-control kw" value="{{ kw|default_if_none:'' }}">
             <div class="input-group-append">
@@ -82,15 +90,16 @@
         {% endif %}
     </ul>
     <!-- 페이징처리 끝 -->
-        <a href="{% url 'board:question_create' %}" class="btn btn-primary text-center">질문 등록하기</a>
-    </div>
-    <form id="searchForm" method="get" action="{% url 'index' %}">
-        <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
-        <input type="hidden" id="page" name="page" value="{{ page }}">
-    </form>
+    <a href="{% url 'board:question_create' %}" class="btn btn-primary text-center">질문 등록하기</a>
+</div>
+<form id="searchForm" method="get" action="{% url 'board:index'  %}">
+    <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
+    <input type="hidden" id="page" name="page" value="{{ page }}">
+    <input type="hidden" id="so" name="so" value="{{ so }}">
+</form>
 
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>a
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>a
 </div>
 {% endblock %}
 {% block script %}
@@ -104,6 +113,11 @@ $(document).ready(function(){
     $("#btn_search").on('click', function() {
         $("#kw").val($(".kw").val());
         $("#page").val(1);  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
+        $("#searchForm").submit();
+    });
+    $(".so").on('change', function() {
+        $("#so").val($(this).val());
+        $("#page").val(1);
         $("#searchForm").submit();
     });
 });
